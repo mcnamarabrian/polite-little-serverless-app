@@ -75,15 +75,6 @@ polite-little-serverless-app$ sam logs -n PoliteGreetingFunction --stack-name po
 
 You can find more information and examples about filtering Lambda function logs in the [SAM CLI Documentation](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-logging.html).
 
-## Unit tests
-
-Tests are defined in the `tests` folder in this project. Use PIP to install the [pytest](https://docs.pytest.org/en/latest/) and run unit tests.
-
-```bash
-polite-little-serverless-app$ pip install pytest pytest-mock --user
-polite-little-serverless-app$ python -m pytest tests/ -v
-```
-
 ## Cleanup
 
 To delete the sample application that you created, use the AWS CLI. Assuming you used your project name for the stack name, you can run the following:
@@ -92,6 +83,49 @@ To delete the sample application that you created, use the AWS CLI. Assuming you
 aws cloudformation delete-stack --stack-name polite-little-serverless-app
 ```
 
+## Packaging as a SAR application
+
+The existing template can be used to generate an application in the [AWS Serverless Application Repository](https://aws.amazon.com/serverless/serverlessrepo/).  
+
+### Build the application
+
+```bash
+polite-little-serverless-app$ sam build --use-container 
+```
+
+### Package the application
+
+```bash
+polite-little-serverless-app$ sam package --template-file .aws-sam/build/template.yaml \
+    --output-template-file packaged.yaml \
+    --s3-bucket your_bucket_to_hold_resources
+```
+
+**Note** Ensure the bucket *your_bucket_to_hold_resources* has a bucket policy to allow the *serverlessrepo.amazonaws.com* service principal to access it.
+
+```bash
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "serverlessrepo.amazonaws.com"
+            },
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::polite-little-serverless-app/*"
+        }
+    ]
+}
+```
+
+### Publish the application
+
+The application can be published using the `Metadata` in the `template.yaml` file.  For more information about publishing specifics, including how to share the application, please refer to [Publishing Applications to the Repository](https://aws.amazon.com/serverless/serverlessrepo/publishing/).
+
+```bash
+polite-little-serverless-app$ sam publish --template packaged.yaml --region us-east-1
+```
 ## Resources
 
 See the [AWS SAM developer guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html) for an introduction to SAM specification, the SAM CLI, and serverless application concepts.
