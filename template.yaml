@@ -20,7 +20,7 @@ Metadata:
     ReadmeUrl: README.md
     Labels: ['sample']
     HomePageUrl: https://github.com/mcnamarabrian/polite-little-serverless-app
-    SemanticVersion: 0.0.2
+    SemanticVersion: 0.0.3
     SourceCodeUrl: https://github.com/mcnamarabrian/polite-little-serverless-app
 
 Resources:
