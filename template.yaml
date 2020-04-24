@@ -16,7 +16,7 @@ Metadata:
     Description: A sample application, used to demonstrate how to deploy apps using SAR.
     Author: mcnamarabrian
     SpdxLicenseId: Apache-2.0
-    LicenseUrl: LICENSE
+    LicenseUrl: ./LICENSE
     ReadmeUrl: README.md
     Labels: ['sample']
     HomePageUrl: https://github.com/mcnamarabrian/polite-little-serverless-app
